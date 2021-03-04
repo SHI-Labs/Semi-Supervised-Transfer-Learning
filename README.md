@@ -45,7 +45,9 @@ Both AKC and ARC improve the performance of standard transfer learning.
 
 ### Effectiveness of transfer learning in semi-supervised setting
 The effectiveness of transfer learning in semi-supervised settings is underestimated. 
-With the Imprinting technique and proper training strategy, transfer learning could lead to a noticeable improvement.  
+With the Imprinting technique and proper training strategy, transfer learning could lead to a noticeable improvement, especially when labeled examples are insufficient.
+
+Results of SSL methods with and without transfer learning on CIFAR-10:  
 ![tf_ssl](figs/tf_ssl.png)  
 
 
