@@ -25,21 +25,18 @@ the target task.  Moreover, our algorithm is orthogonal to existing methods and 
 ![model](figs/model.png)
 
 ## Tasks
-### Semi-Supervised Transfer Learning 
+### Semi-supervised transfer learning 
 AKC and ARC regularization terms could be combined with other semi-supervised learning methods, 
 like MixMatch and FixMatch. By utilizing AKC and ARC regularization techniques in MixMatch, the performance increased notably.
 
 Results on CUB-200-2011 dataset:  
 ![cub200](figs/cub200.png)
 
-Results on CIFAR-10 dataset:  
-![cifar10](figs/cifar10.png)
-
 The actual sample selected ratio in ARC and AKC is shown in Figure 2 on CUB-200-2011 dataset experiment. 
 As can be seen, the sample selected ratio for ARC is gradually increasing. Which can be regarded as a kind of curriculum learning.  
 ![sample_ratio](figs/sample_ratio.png)
 
-### Supervised Learning 
+### Supervised transfer learning 
 Both AKC and ARC improve the performance of standard transfer learning.    
 ![supervised](figs/supervised.png)
 
