@@ -50,7 +50,7 @@ Results of SSL methods with and without transfer learning on CIFAR-10:
 
 ## Citation
 If you find the code helpful in your resarch or work, please cite the following papers.
-```
+```BibTex
 @inProceedings{abuduweili2021adaptive,
   title={Adaptive Consistency Regularization for Semi-Supervised Transfer Learning},
   author={Abuduweili, Abulikemu and Li, Xingjian and Shi, Humphrey and Xu, Cheng-Zhong and Dou, Dejing},
