@@ -21,15 +21,16 @@ def default_parser():
     parser.add_argument("--model", default="resnet", type=str, help="model architecture") #resner or wideresnetleaky
     parser.add_argument("--depth", default=50,  type=int, help="model depth")
     parser.add_argument("--widen_factor", default=1,  type=int, help="widen factor for wide resnet")
-    parser.add_argument("--bn_momentum", default=0.01,  type=float, help="bn momentum for wide resnet")
+    parser.add_argument("--bn_momentum", default=0.001,  type=float, help="bn momentum for wide resnet")
     parser.add_argument("--l_batch_size", "-l_bs", default=64, type=int, help="mini-batch size of labeled data")
     parser.add_argument("--ul_batch_size", "-ul_bs", default=64, type=int, help="mini-batch size of unlabeled data")
     parser.add_argument("--lr", default=0.01, type=float, help="learning rate")
     parser.add_argument("--weight_decay", "-wd", default=0.0001, type=float, help="weight decay")
     parser.add_argument("--momentum", default=0.9, type=float, help="momentum for sgd or beta_1 for adam")
     parser.add_argument('--per_epoch_steps', type=int, default=100, help='number of training images for each epoch') #  1000
-    parser.add_argument("--epochs", default=50, type=int, help="number of training epochs") # iterations 1000000
-    parser.add_argument("--warmup_iter", default=0, type=int, help="wnumber of armup iteration for SSL loss coefficient")
+    parser.add_argument("--epochs", default=110, type=int, help="number of training epochs") # iterations 1000000
+    parser.add_argument("--warmup_iter", default=0, type=int, help="number of warmup iteration for SSL loss coefficient")
+    parser.add_argument("--num_cycles", default=7.9/16, type=float, help="num cycle for CosineAnnealingLR")
     parser.add_argument("--merge_one_batch", default=0 ,type=int, help="interleave of not")
     parser.add_argument("--interleave", default=1 ,type=int, help="interleave of not")
     # SSL common config
@@ -48,14 +49,14 @@ def default_parser():
     parser.add_argument("--consistency", "-consis", default="ce", choices=['ce', 'ms'], type=str,
 	                    help="consistency type")
     ## AKC and ARC
-    parser.add_argument('--reg_warmup', type=int, default=100, )
+    parser.add_argument('--reg_warmup', type=int, default=10, )
     parser.add_argument('--reg_warmup_iter', type=int, default=100, ) # 100
     parser.add_argument('--lambda_mmd', type=float, default=50, help='data_mmd_loss_ratio') #50
     parser.add_argument('--mmd_feat_table_l', type=int, default=128, help='feat size for mmd table') # 128
     parser.add_argument('--mmd_feat_table_u', type=int, default=128, help='feat size for mmd table') # 128
     parser.add_argument('--mmd_threshold', default=0.7, type=float, help='kd loss threshold in terms of outputs entropy')
     parser.add_argument('--lambda_kd', type=float, default=0, help='model_kd_loss_ratio') # lambda_kd 1,
-    parser.add_argument('--kd_threshold', default=0.5, type=float, help='kd loss threshold in terms of outputs entropy')
+    parser.add_argument('--kd_threshold', default=0.7, type=float, help='kd loss threshold in terms of outputs entropy')
     parser.add_argument('--kd_ent_class', type=int, default=1000)
     ## transfer learning
     parser.add_argument('--pretrained', type=int, default=1)

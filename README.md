@@ -5,7 +5,7 @@ This repository is for Adaptive Knowledge Consistency and Adaptive Representatio
 Abulikemu Abuduweili, Xingjian Li, Humphrey Shi, Cheng-Zhong Xu, and Dejing Dou, [Adaptive Consistency Regularization for Semi-Supervised Transfer Learning](https://arxiv.org/abs/2103.02193), CVPR 2021,  
  
 
-The code is developed on CentOS 6.3 environment (Python 3.6, PyTorch 1.1, CUDA 9.0) with Tesla V100 GPUs.
+Please check the code in [code](code).
 
 ## Contents
 1. [Introduction](#Introduction)

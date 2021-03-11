@@ -1,4 +1,3 @@
-
 import os, numpy, random, time, json
 import torch
 import torch.nn.functional as F
@@ -11,10 +10,11 @@ from ssl_lib.param_scheduler import scheduler
 from ssl_lib.utils import Logger
 from ssl_lib.trainer.train import train, evaluate
 from ssl_lib.trainer.imprint import imprint
-#os.environ["CUDA_DEVICE_ORDER"] = PCI_BUS_ID
-#os.environ['CUDA_VISIBLE_DEVICES'] = "2,3"
 
-print('pid:',os.getpid())
+# os.environ["CUDA_DEVICE_ORDER"] = PCI_BUS_ID
+# os.environ['CUDA_VISIBLE_DEVICES'] = "2,3"
+
+print('pid:', os.getpid())
 
 
 def main(cfg):
@@ -33,25 +33,28 @@ def main(cfg):
         device = "cpu"
     # build data loader
     print("load dataset")
-    lt_loader, ult_loader, test_loader, num_classes, img_size = gen_dataloader(cfg.data_root, cfg.dataset,  cfg=cfg)
+    lt_loader, ult_loader, test_loader, num_classes, img_size = gen_dataloader(cfg.data_root, cfg.dataset, cfg=cfg)
     cfg.num_classes = num_classes
     # set ssl algorithm
     ssl_alg = gen_ssl_alg(cfg.alg, cfg)
     # build student model
-    model = gen_model(cfg.model,cfg.depth,cfg.widen_factor, num_classes,cfg.pretrained_weight_path,cfg.pretrained,bn_momentum=cfg.bn_momentum).to(device)
+    model = gen_model(cfg.model, cfg.depth, cfg.widen_factor, num_classes, cfg.pretrained_weight_path, cfg.pretrained,
+                      bn_momentum=cfg.bn_momentum).to(device)
     if cfg.imprint:
-        model = imprint(model,lt_loader,num_classes,cfg.num_labels,device)
-    if cfg.lambda_kd>0:
-        source_model = gen_model(cfg.model,cfg.depth,cfg.widen_factor, 1000,cfg.pretrained_weight_path,True,bn_momentum=cfg.bn_momentum).to(device)
+        model = imprint(model, lt_loader, num_classes, cfg.num_labels, device)
+    if cfg.lambda_kd > 0:
+        source_model = gen_model(cfg.model, cfg.depth, cfg.widen_factor, 1000, cfg.pretrained_weight_path, True,
+                                 bn_momentum=cfg.bn_momentum).to(device)
         for param_s in source_model.parameters():
             param_s.requires_grad = False  # not update by gradient for eval_net
         source_model.eval()
         source_model = torch.nn.DataParallel(source_model)
     else:
-        source_model=None
+        source_model = None
     # build teacher model
     if cfg.ema_teacher:
-        ema_teacher = gen_model(cfg.model,cfg.depth,cfg.widen_factor, num_classes,cfg.pretrained_weight_path,cfg.pretrained,bn_momentum=cfg.bn_momentum).to(device)
+        ema_teacher = gen_model(cfg.model, cfg.depth, cfg.widen_factor, num_classes, cfg.pretrained_weight_path,
+                                cfg.pretrained, bn_momentum=cfg.bn_momentum).to(device)
         ema_teacher.load_state_dict(model.state_dict())
         for param_t in ema_teacher.parameters():
             param_t.requires_grad = False  # not update by gradient for eval_net
@@ -67,7 +70,7 @@ def main(cfg):
     wd_params, non_wd_params = [], []
     for name, param in model.named_parameters():
         if 'bn' in name or 'bias' in name:
-            non_wd_params.append(param)  
+            non_wd_params.append(param)
         else:
             wd_params.append(param)
     param_list = [
@@ -75,12 +78,13 @@ def main(cfg):
 
     optimizer = optim.SGD(param_list, lr=cfg.lr, momentum=cfg.momentum, weight_decay=0, nesterov=True)
     # set lr scheduler
-    lr_scheduler = scheduler.CosineAnnealingLR(optimizer, cfg.iteration)
+    lr_scheduler = scheduler.CosineAnnealingLR(optimizer, cfg.iteration, num_cycles=cfg.num_cycles)
 
     # init meter
-    start_epoch=0
-    log_names = ['Epoch','Learning Rate', 'Train Loss', 'Loss CE', 'Loss SSL', 'Loss MMD','Loss KD','Labeled Acc','Unlabeled Acc', 'Mask SSL', 'Mask MMD', 'Mask KD', 
-      'Test Loss', 'Test Acc.', 'Test Raw Acc.','Time']
+    start_epoch = 0
+    log_names = ['Epoch', 'Learning Rate', 'Train Loss', 'Loss CE', 'Loss SSL', 'Loss MMD', 'Loss KD', 'Labeled Acc',
+                 'Unlabeled Acc', 'Mask SSL', 'Mask MMD', 'Mask KD',
+                 'Test Loss', 'Test Acc.', 'Test Raw Acc.', 'Time']
     if cfg.resume:
         # Load checkpoint.
         print('==> Resuming from checkpoint..')
@@ -100,28 +104,30 @@ def main(cfg):
 
     print("training")
     test_acc_list = []
-    time_record=time.time()
+    time_record = time.time()
     for epoch in range(start_epoch, cfg.epochs):
         lr = optimizer.param_groups[0]['lr']
-        
-        print('\nEpoch: [%d | %d] LR: %f Epoch Time: %.3f min' % (epoch, cfg.epochs, lr, (time.time()-time_record)/60))
+
+        print('\nEpoch: [%d | %d] LR: %f Epoch Time: %.3f min' % (
+        epoch, cfg.epochs, lr, (time.time() - time_record) / 60))
         train_loader = zip(lt_loader, ult_loader)
-        train_logs = train(epoch,train_loader, model,source_model,ema_teacher,optimizer,lr_scheduler, ssl_alg, cfg,device)
-        dtime = time.time()-time_record
+        train_logs = train(epoch, train_loader, model, source_model, ema_teacher, optimizer, lr_scheduler, ssl_alg, cfg,
+                           device)
+        dtime = time.time() - time_record
 
         test_loss, test_acc, test_raw_acc = evaluate(model, ema_teacher, test_loader, device)
         test_acc_list.append(test_acc)
-        logger.append((epoch,lr)+train_logs+(test_loss, test_acc, test_raw_acc,dtime))
-        
-        if  (epoch +1) % cfg.save_every==0:
-            filepath = os.path.join(cfg.save_path, f'{cfg.net_name}_{epoch+1}.pth')
-            torch.save({'epoch': epoch+1,
-                'model': model.module.state_dict(),
-                'ema_model': ema_teacher.module.state_dict() if cfg.ema_teacher else None,
-                'optimizer': optimizer.state_dict(),
-                'lr_scheduler': lr_scheduler.state_dict()}, filepath)
-        
-        time_record=time.time()
+        logger.append((epoch, lr) + train_logs + (test_loss, test_acc, test_raw_acc, dtime))
+
+        if (epoch + 1) % cfg.save_every == 0:
+            filepath = os.path.join(cfg.save_path, f'{cfg.net_name}_{epoch + 1}.pth')
+            torch.save({'epoch': epoch + 1,
+                        'model': model.module.state_dict(),
+                        'ema_model': ema_teacher.module.state_dict() if cfg.ema_teacher else None,
+                        'optimizer': optimizer.state_dict(),
+                        'lr_scheduler': lr_scheduler.state_dict()}, filepath)
+
+        time_record = time.time()
 
     accuracies = {}
     for i in [1, 10, 20, 50]:
@@ -135,6 +141,7 @@ def main(cfg):
 
 if __name__ == "__main__":
     from parser import get_args
+
     args = get_args()
-    print('args:',args)
+    print('args:', args)
     main(args)
