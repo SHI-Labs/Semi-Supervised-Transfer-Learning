@@ -33,8 +33,3 @@ python -u main.py \
 4) (Optional) Plot the training and evaluation results as [plot_loss.ipynb](plot_loss.ipynb).
 e.g: Evaluation accuracy during an experiment on CUB_200_2011 dataset with 400 labeled examples as shown below.  
 ![acc_curve](../figs/acc_curve.png)     
-   Please check more figures in [plot_loss.ipynb](plot_loss.ipynb). 
-
-
-
-
