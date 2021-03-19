@@ -28,7 +28,7 @@ def default_parser():
     parser.add_argument("--weight_decay", "-wd", default=0.0001, type=float, help="weight decay")
     parser.add_argument("--momentum", default=0.9, type=float, help="momentum for sgd or beta_1 for adam")
     parser.add_argument('--per_epoch_steps', type=int, default=100, help='number of training images for each epoch') #  1000
-    parser.add_argument("--epochs", default=110, type=int, help="number of training epochs") # iterations 1000000
+    parser.add_argument("--epochs", default=100, type=int, help="number of training epochs") # iterations 1000000
     parser.add_argument("--warmup_iter", default=0, type=int, help="number of warmup iteration for SSL loss coefficient")
     parser.add_argument("--num_cycles", default=7.9/16, type=float, help="num cycle for CosineAnnealingLR")
     parser.add_argument("--merge_one_batch", default=0 ,type=int, help="interleave of not")
