@@ -2,7 +2,7 @@
 
 This repository is for Adaptive Knowledge Consistency and Adaptive Representation Consistency introduced in the following paper:
  
-Abulikemu Abuduweili, Xingjian Li, Humphrey Shi, Cheng-Zhong Xu, and Dejing Dou, [Adaptive Consistency Regularization for Semi-Supervised Transfer Learning](https://arxiv.org/abs/2103.02193), CVPR 2021,  
+Abulikemu Abuduweili, Xingjian Li, Humphrey Shi, Cheng-Zhong Xu, and Dejing Dou, [Adaptive Consistency Regularization for Semi-Supervised Transfer Learning](https://arxiv.org/abs/2103.02193), CVPR 2021.  
  
 
 ## About the code
@@ -26,7 +26,7 @@ dataset=cub200
 num_labels=400
 arc=50 # adaptive representation consistency (semi-supervised)
 akc=0 # adaptive knowledge consistency (transfer)
-python -u main.py \
+CUDA_VISIBLE_DEVICES=0,1 python -u main.py \
 --data_root $data_root --dataset $dataset --num_labels $num_labels --pretrained_weight_path $pretrain_path  \
 --lambda_mmd $arc --lambda_kd $akc 
 ```
