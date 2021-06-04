@@ -40,6 +40,16 @@ def get_indoor(root):
                  "labels": test_data.targets}
     return train_data, test_data
 
+def get_cifar10(root):
+    from torchvision.datasets import CIFAR10
+    train_data = CIFAR10(root, download=True)
+    test_data = CIFAR10(root, False)
+    train_data = {"images": train_data.data.astype(np.uint8),
+                  "labels": np.asarray(train_data.targets)}
+    test_data = {"images": test_data.data.astype(np.uint8), 
+                 "labels": np.asarray(test_data.targets)}
+    return train_data, test_data
+
 def data_choice(data, indics):
     if isinstance(data,np.ndarray):
         new_data = data[indics]
