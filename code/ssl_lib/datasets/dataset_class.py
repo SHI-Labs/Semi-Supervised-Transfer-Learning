@@ -2,7 +2,8 @@ import torch
 import torchvision
 from PIL import Image
 import numpy as np
-import os,sys,pickle
+import pickle
+from torchvision.transforms.functional import to_pil_image
 
 class LoadedImageFolder(torchvision.datasets.ImageFolder):
 	def __init__(self, root, transform=None, target_transform=None):
