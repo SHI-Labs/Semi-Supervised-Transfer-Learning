@@ -2,7 +2,7 @@ import torch
 import torchvision
 from PIL import Image
 import numpy as np
-import os,sys
+import os,sys,pickle
 
 class LoadedImageFolder(torchvision.datasets.ImageFolder):
 	def __init__(self, root, transform=None, target_transform=None):
