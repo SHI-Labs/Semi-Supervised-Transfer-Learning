@@ -60,6 +60,12 @@ def gen_dataloader(root, dataset, cfg):
         img_size = 224
         mean = (0.485, 0.456, 0.406)
         std = (0.229, 0.224, 0.225)
+    elif dataset == "cifar10":
+        train_data, test_data = utils.get_cifar10(root)
+        num_classes = 10
+        img_size = 32
+        mean = (0.481, 0.457, 0.408)
+        std = (0.260, 0.253, 0.268)        
     else:
         raise NotImplementedError
 
