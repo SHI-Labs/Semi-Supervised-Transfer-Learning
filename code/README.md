@@ -52,9 +52,8 @@ Then rename the pretrained checkpoint as `wideresnetleaky_28_2.pth`.
 2) run `main.py` on CIFAR-10 dataset. 
 Hyper-parameters of the CIFAR-10 are quite different from CUB-200.  
 The default CIFAR-10 training hyperparameters are:
-```
---model wideresnetleaky --depth 28 --widen_factor 2  --lr 0.001 --weight_decay 0.0005 --epochs 200 --l_batch_size 64 --ul_batch_size 448 
-```
+` --model wideresnetleaky --depth 28 --widen_factor 2  --lr 0.001 --weight_decay 0.0005 --epochs 200 --l_batch_size 64 --ul_batch_size 448 `
+
 For some of the algorithms, you need to set `--bn_momentum 0.1` (e.g. Fixmatch with pretraining) or  `--bn_momentum 0.001` (e.g. Fixmatch learning from scratch).
 
 The default FixMatch hyperparameters are:    
