@@ -36,6 +36,7 @@ CUDA_VISIBLE_DEVICES=0,1 python -u main.py \
 
 The default MixMatch parameters are:   
 `--coef 500 --alpha 0.75 --alg ict --consistency ms --warmup_iter 4000 --ema_teacher true --ema_teacher_train true --ema_teacher_warmup true --ema_teacher_factor 0.999`
+
 The default FixMatch parameters are:   
 `--coef 0.5 --alg pl --strong_aug true --threshold 0.95  --ema_teacher true --ema_apply_wd true --ema_teacher_factor 0.999 --cutout_size 0.5`
 
@@ -57,9 +58,8 @@ The default CIFAR-10 training hyperparameters are:
 For some of the algorithms, you need to set `--bn_momentum 0.1` (e.g. Fixmatch with pretraining) or  `--bn_momentum 0.001` (e.g. Fixmatch learning from scratch).
 
 The default FixMatch hyperparameters are:    
-```
---coef 1.0 --alg pl --strong_aug true --threshold 0.95 --ema_teacher true  --ema_teacher_factor 0.999 --cutout_size 0.5
-```
+` --coef 1.0 --alg pl --strong_aug true --threshold 0.95 --ema_teacher true  --ema_teacher_factor 0.999 --cutout_size 0.5`
+
 The default MixMatch parameters are:   
 `--coef 100 --alpha 0.75 --alg ict --consistency ms --warmup_iter 4000 --ema_teacher true --ema_teacher_train true --ema_teacher_warmup true --ema_teacher_factor 0.999`
 
