@@ -36,7 +36,6 @@ CUDA_VISIBLE_DEVICES=0,1 python -u main.py \
 
 The default MixMatch parameters are:   
 `--coef 500 --alpha 0.75 --alg ict --consistency ms --warmup_iter 4000 --ema_teacher true --ema_teacher_train true --ema_teacher_warmup true --ema_teacher_factor 0.999`
-
 The default FixMatch parameters are:   
 `--coef 0.5 --alg pl --strong_aug true --threshold 0.95  --ema_teacher true --ema_apply_wd true --ema_teacher_factor 0.999 --cutout_size 0.5`
 
