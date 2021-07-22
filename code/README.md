@@ -48,7 +48,7 @@ e.g: Evaluation accuracy during an experiment on CUB_200_2011 dataset with 400 l
 
 1) Pretrain the WideResnet-28-2 on [Imagenet-32 dataset](https://patrykchrabaszcz.github.io/Imagenet32/) with the the pretraining script [pretrain.py](pretrain.py) or download the pretrained WideResnet-28-2 from [here](ssl_lib/models/ckpt/wideresnetleaky_28_2.pth). 
 Then rename the pretrained checkpoint as `wideresnetleaky_28_2.pth`.
-2) run `main.py` on CIFAR-10 dataset. 
+2) run [main.py](main.py) on CIFAR-10 dataset. 
 
 Hyper-parameters of the CIFAR-10 are quite different from CUB-200.  
 The default CIFAR-10 training hyperparameters are:
