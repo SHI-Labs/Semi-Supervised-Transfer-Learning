@@ -6,8 +6,7 @@ Abulikemu Abuduweili, Xingjian Li, Humphrey Shi, Cheng-Zhong Xu, and Dejing Dou,
  
 
 ## About the code
-The code is developed on CentOS 6.3 environment (Python 3.6, PyTorch 1.1, CUDA 9.0) with Tesla V100 GPUs. 
-This code can be used for CUB-200-2011, MIT Indoor-67, and MURA datasets.  
+The code is developed on CentOS 6.3 environment (Python 3.6, PyTorch 1.1, CUDA 9.0) with Tesla V100 GPUs.   
 Please check the core training part of the code in [train.py](ssl_lib/trainer/train.py); check the implementation of ARC and AKC in [regularizer.py](ssl_lib/consistency/regularizer.py).  
 For the hyperparameter in [parser.py](parser.py),  `lambda_kd` represents the regularization weight factors for AKC, and `lambda_mmd` represents the regularization weight factors for ARC;
 `kd_threshold` and `mmd_threshold` are the threshold value for AKC and ARC;
@@ -21,6 +20,7 @@ For the hyperparameter in [parser.py](parser.py),  `lambda_kd` represents the re
 2) Pretrain the ResNet-50 model on [Imagenet](http://image-net.org/download-images) or download the Imagenet pretrained models from [pytorch.models](https://download.pytorch.org/models/resnet50-19c8e357.pth) in your checkpoint folder, e.g. `./ckpt/`. Then rename the pretrained checkpoint as `resnet_50_1.pth`.  
 PS: The output of our model is slightly different from the original ResNet-50 model, please check the code.
 3) In [parser.py](parser.py), `lambda_kd` represents the regularization weight factors for AKC, and  `lambda_mmd` represents the regularization weight factors for ARC.   
+4) run [main.py](main.py) on CUB-200-2011 dataset.   
 e.g: Train the models with ARC:
 ```
 pretrain_path="ckpt" # pretrained model path
