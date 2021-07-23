@@ -65,7 +65,7 @@ The default MixMatch parameters are:
 
 As an example, please try the following settings for pre-trained FixMatch on CIFAR-10:
 ```
-pretrain_path="ckpt"
+pretrain_path="ssl_lib/models/ckpt"
 data_root="data"
 dataset=cifar10
 num_labels=40
